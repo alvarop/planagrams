@@ -33,13 +33,13 @@ def getWordLists(wordFilename):
 
 	return letterLists
 
-# Print list of tuples nicely
-def printWords(wordTupleList):
+# Format list of tuples nicely
+def formatWords(wordTupleList):
 	words = []
 	for wordTuple in wordTupleList:
 		words.append(wordTuple[1])
 
-	print ', '.join(words)
+	return ', '.join(words)
 
 # First item in tuple is the letter-sorted word
 # if both are the same, they are anagrams!
@@ -51,6 +51,8 @@ def getAnagrams(wordList):
 	# for other words as soon as there is a mismatch
 	# This should speed things up quite a bit!
 	wordList = sorted(wordList, key = lambda x:x[0])
+
+	anagramStrings = []
 
 	while len(wordList) > 0:
 		# Remove the first wordTuple. We don't want to match with itself
@@ -73,7 +75,9 @@ def getAnagrams(wordList):
 				# Remove the used words from the list
 				wordList.remove(currentWords[index])
 			
-			printWords(currentWords)
+			anagramStrings.append(formatWords(currentWords))
+
+	return anagramStrings
 
 #
 # Start here!
@@ -83,4 +87,7 @@ WORDFILE = '/usr/share/dict/words'
 wordLists = getWordLists(WORDFILE)
 
 for wordLen in wordLists:
-	getAnagrams(wordLists[wordLen])
+	anagramStrings = getAnagrams(wordLists[wordLen])
+
+	if(len(anagramStrings) > 0):
+		print('\n'.join(anagramStrings))
