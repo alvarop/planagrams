@@ -62,7 +62,8 @@ def getAnagrams(wordList):
 				# since they are all sorted
 				break
 
-		if len(currentWords) > 3:
+		# Make sure there are at least as many words as there are letters!
+		if len(currentWords) >= len(currentWordTuple[1]):
 			for index in range(1,len(currentWords)):
 				# Remove the used words from the list
 				wordList.remove(currentWords[index])
