@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-# Anagram finder!
+# Anagram finder! by Alvaro Prieto
+# Change the WORDFILE variable to point to your word file
 
 # Sort the letters in each word
 # If the remaining string is the same, then
@@ -44,6 +45,11 @@ def printWords(wordTupleList):
 	print ', '.join(words)
 
 def getAnagrams(wordList):
+	# Pre-sort list by sorted letters so we can stop searching
+	# for other words as soon as there is a mismatch
+	# This should speed things up quite a bit!
+	wordList = sorted(wordList, key = lambda x:x[0])
+
 	while len(wordList) > 0:
 		currentWordTuple = wordList.pop(0)
 		currentWords = [currentWordTuple]
@@ -51,6 +57,10 @@ def getAnagrams(wordList):
 		for wordTuple in wordList:
 			if(isAnagram(currentWordTuple, wordTuple)):
 				currentWords.append(wordTuple)
+			else:
+				# We can stop searching after the first non-match,
+				# since they are all sorted
+				break
 
 		if len(currentWords) > 3:
 			for index in range(1,len(currentWords)):
@@ -59,7 +69,9 @@ def getAnagrams(wordList):
 			
 			printWords(currentWords)
 
-# Start here
+#
+# Start here!
+#
 WORDFILE = '/usr/share/dict/words'
 
 wordLists = getWordLists(WORDFILE)
