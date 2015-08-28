@@ -3,12 +3,6 @@
 # Anagram finder! by Alvaro Prieto
 # Change the WORDFILE variable to point to your word file
 
-# Sort the letters in each word
-# If the remaining string is the same, then
-# we have an anagram!
-def isAnagram(wordTuple1, wordTuple2):
-	return wordTuple1[0] == wordTuple2[0]
-
 # Read word file and split into lists of 
 # words with the same number of letters
 # Also save a sorted version of the word for later use
@@ -20,13 +14,15 @@ def getWordLists(wordFilename):
 		with open(wordFilename) as wordList:
 			for word in wordList:
 
-				word = word.strip()
+				word = word.strip() # No newlines please!
 
 				wordLen = len(word)
 
+				# Ignore all the short words
 				if wordLen < 4:
 					continue
 
+				# Store both the word and a letter-sorted version of it in tuple
 				if wordLen in letterLists:
 					letterLists[wordLen].append((''.join(sorted(word)), word))
 				else:
@@ -37,12 +33,18 @@ def getWordLists(wordFilename):
 
 	return letterLists
 
+# Print list of tuples nicely
 def printWords(wordTupleList):
 	words = []
 	for wordTuple in wordTupleList:
 		words.append(wordTuple[1])
 
 	print ', '.join(words)
+
+# First item in tuple is the letter-sorted word
+# if both are the same, they are anagrams!
+def isAnagram(wordTuple1, wordTuple2):
+	return wordTuple1[0] == wordTuple2[0]
 
 def getAnagrams(wordList):
 	# Pre-sort list by sorted letters so we can stop searching
@@ -51,7 +53,10 @@ def getAnagrams(wordList):
 	wordList = sorted(wordList, key = lambda x:x[0])
 
 	while len(wordList) > 0:
-		currentWordTuple = wordList.pop(0)
+		# Remove the first wordTuple. We don't want to match with itself
+		currentWordTuple = wordList.pop(0) 
+
+		# Keep track of all matching words here
 		currentWords = [currentWordTuple]
 
 		for wordTuple in wordList:
@@ -59,7 +64,7 @@ def getAnagrams(wordList):
 				currentWords.append(wordTuple)
 			else:
 				# We can stop searching after the first non-match,
-				# since they are all sorted
+				# since they are all sorted. This makes things fast!
 				break
 
 		# Make sure there are at least as many words as there are letters!
