@@ -36,6 +36,13 @@ def getWordLists(wordFilename):
 
 	return letterLists
 
+def printWords(wordTupleList):
+	words = []
+	for wordTuple in wordTupleList:
+		words.append(wordTuple[1])
+
+	print ', '.join(words)
+
 def getAnagrams(wordList):
 	while len(wordList) > 0:
 		currentWordTuple = wordList.pop(0)
@@ -46,12 +53,11 @@ def getAnagrams(wordList):
 				currentWords.append(wordTuple)
 
 		if len(currentWords) > 3:
-			print currentWords[0][1],
 			for index in range(1,len(currentWords)):
 				# Remove the used words from the list
 				wordList.remove(currentWords[index])
-				print ',' + currentWords[index][1],
-			print '\n',
+			
+			printWords(currentWords)
 
 # Start here
 WORDFILE = '/usr/share/dict/words'
